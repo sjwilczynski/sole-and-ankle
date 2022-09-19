@@ -34,16 +34,20 @@ const ShoeCard = ({
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
+        <Badge variant={variant} />
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price variant={variant}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          {variant === "on-sale" ? (
+            <SalePrice>{formatPrice(salePrice)}</SalePrice>
+          ) : null}
         </Row>
       </Wrapper>
     </Link>
@@ -56,7 +60,9 @@ const Link = styled.a`
   flex: 1 1 215px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -77,7 +83,11 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  text-decoration: ${(p) =>
+    p.variant === "on-sale" ? "line-through" : "none"};
+  color: ${(p) => (p.variant === "on-sale" ? COLORS.gray[700] : "inherit")};
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
@@ -89,3 +99,25 @@ const SalePrice = styled.span`
 `;
 
 export default ShoeCard;
+
+const Badge = ({ variant }) => {
+  const text = variant === "on-sale" ? "Sale" : "Just Released!";
+
+  if (variant === "default") {
+    return null;
+  }
+
+  return <BadgeWrapper variant={variant}>{text}</BadgeWrapper>;
+};
+
+const BadgeWrapper = styled.span`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  background-color: ${(p) =>
+    p.variant === "on-sale" ? COLORS.primary : COLORS.secondary};
+  color: ${COLORS.white};
+  z-index: 2;
+  padding: 8px 10px;
+  font-weight: ${WEIGHTS.bold};
+`;
