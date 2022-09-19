@@ -35,13 +35,19 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Badge variant={variant} />
+          {variant === "on-sale" && <SaleBadge>Sale</SaleBadge>}
+          {variant === "new-release" && <NewBadge>Just released!</NewBadge>}
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price variant={variant}>{formatPrice(price)}</Price>
+          {variant === "on-sale" && (
+            <OldPrice>{formatPrice(salePrice)}</OldPrice>
+          )}
+          {variant !== "on-sale" && (
+            <Price variant={variant}>{formatPrice(price)}</Price>
+          )}
         </Row>
         <Row>
           <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
@@ -81,40 +87,37 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span`
-  text-decoration: ${(p) =>
-    p.variant === "on-sale" ? "line-through" : "none"};
-  color: ${(p) => (p.variant === "on-sale" ? COLORS.gray[700] : "inherit")};
+const Price = styled.span``;
+
+const OldPrice = styled(Price)`
+  text-decoration: line-through;
+  color: ${COLORS.gray[700]};
 `;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
 `;
 
-const SalePrice = styled.span`
+const SalePrice = styled(Price)`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
 `;
 
-export default ShoeCard;
-
-const Badge = ({ variant }) => {
-  const text = variant === "on-sale" ? "Sale" : "Just Released!";
-
-  if (variant === "default") {
-    return null;
-  }
-
-  return <BadgeWrapper variant={variant}>{text}</BadgeWrapper>;
-};
-
-const BadgeWrapper = styled.span`
+const Badge = styled.span`
   position: absolute;
   top: 12px;
   right: -4px;
-  background-color: ${(p) =>
-    p.variant === "on-sale" ? COLORS.primary : COLORS.secondary};
   color: ${COLORS.white};
   padding: 8px 10px;
   font-weight: ${WEIGHTS.bold};
 `;
+
+const SaleBadge = styled(Badge)`
+  background-color: ${COLORS.primary};
+`;
+
+const NewBadge = styled(Badge)`
+  background-color: ${COLORS.secondary};
+`;
+
+export default ShoeCard;
