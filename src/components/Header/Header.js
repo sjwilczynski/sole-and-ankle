@@ -27,7 +27,8 @@ const Header = () => {
 };
 
 const MainHeader = styled.div`
-  padding: 24px 32px;
+  height: 72px;
+  padding: 0 32px;
   position: relative;
   border-bottom: 1px solid ${COLORS.gray[300]};
   display: flex;
