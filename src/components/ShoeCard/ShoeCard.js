@@ -34,8 +34,8 @@ const ShoeCard = ({
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
-        <Badge variant={variant} />
         <ImageWrapper>
+          <Badge variant={variant} />
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
@@ -60,9 +60,7 @@ const Link = styled.a`
   flex: 1 1 215px;
 `;
 
-const Wrapper = styled.article`
-  position: relative;
-`;
+const Wrapper = styled.article``;
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -117,7 +115,6 @@ const BadgeWrapper = styled.span`
   background-color: ${(p) =>
     p.variant === "on-sale" ? COLORS.primary : COLORS.secondary};
   color: ${COLORS.white};
-  z-index: 2;
   padding: 8px 10px;
   font-weight: ${WEIGHTS.bold};
 `;
